@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<title></title>
+	<link href="../../assets/css/mui.min.css" rel="stylesheet" />
+	<link href="../../assets/css/mui.picker.min.css" rel="stylesheet" />
+	<link href="../../assets/css/icons-extra.css" rel="stylesheet" />
+	<link rel="stylesheet" href="../../assets/resource/css/common.css" />
+	<link rel="stylesheet" href="../patient/css/patientList.css" />
+	<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"> </script>
+</head>
+<style>
+	.mui-plus .plus {
+		display: inline;
+	}
+
+	.mui-bar-nav~.mui-content {
+		padding-top: 55px;
+	}
+
+	#topPopover {
+		/*position: fixed;*/
+		top: 16px;
+		right: 6px;
+		left: 0px !important;
+	}
+
+	#topPopover .mui-popover-arrow {
+		left: auto;
+		right: 6px;
+	}
+
+	p {
+		text-indent: 22px;
+	}
+
+	/*span.mui-icon {
+			font-size: 14px;
+			margin-left: -15px;
+			padding-right: 10px;
+		}
+		*/
+
+	.mui-popover {
+		height: 300px;
+	}
+
+	.mui-content {
+		padding: 10px;
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+
+	.tick {
+		display: none;
+	}
+
+	#OA_task_1 .mui-col-xs-1 {
+		width: 20px;
+	}
+
+	#OA_task_1 .mui-col-xs-2 {
+		width: 25.66666667% !important;
+	}
+
+	#OA_task_1 li {
+		padding-right: 0px;
+	}
+
+	.mui-slider-handle {
+		padding-right: 15px;
+	}
+
+	input[type=search] {
+		border-radius: 0px;
+		background-color: white;
+	}
+
+	/*下拉菜单*/
+
+	.mui-popover {
+		height: 80%;
+	}
+
+	.mui-popover .mui-popover-arrow:after {
+		height: 0px;
+	}
+
+	.mui-slider-handle .mui-col-xs-4,
+	.mui-slider-handle .mui-col-xs-5 {
+		word-wrap: break-word;
+		word-break: break-all;
+		vertical-align: middle;
+	}
+
+	.mui-slider-handle .mui-col-xs-1 {
+		vertical-align: middle;
+	}
+
+	.patientDetail .mui-slider-handle {
+		padding-right: 0px;
+	}
+
+	.marginRight5 {
+		margin-right: 5px;
+	}
+
+	#searchInput {
+		position: relative;
+		top: -8px;
+	}
+
+	.statusChoose {
+		position: relative;
+		display: block;
+	}
+
+	.mui-search .mui-placeholder {
+		text-align: left;
+	}
+
+	.statusChoose #menu {
+		display: block;
+		padding-right: 20px;
+		background-image: url(../../assets/image/triangle-down.png);
+		background-position: 100% 0px;
+		background-repeat: no-repeat;
+		background-size: 20px 20px;
+	}
+
+	.patientDetail .square {
+		position: relative;
+		top: -3px;
+	}
+
+	.patientDetail .mui-btn-green,
+	.patientDetail .mui-btn-red {
+		padding-top: 11px !important;
+		padding-bottom: 12px !important;
+		top: -1px;
+	}
+
+	/*.ui-flex div:nth-child(1){
+			max-width: 140px;
+		}*/
+
+	#OA_task_1 .ui-flex-item img {
+		position: relative;
+		top: 1px;
+	}
+
+	.patientDetail:last-child {
+		margin-bottom: 70px;
+	}
+
+	.switchIcon {
+		position: fixed;
+		top: 70%;
+		z-index: 999;
+		width: 50px;
+		height: 50px;
+		left: 85%;
+		border-radius: 50% 50% 50% 50%;
+		background-color: #ffffff;
+	}
+
+	.plusIcon {
+		position: fixed;
+		top: 80%;
+		z-index: 999;
+		width: 50px;
+		height: 50px;
+		left: 85%;
+		border-radius: 50% 50% 50% 50%;
+		background-color: #ffffff;
+	}
+
+	.switchImgClass {
+		margin-right: 10px;
+		position: absolute;
+		margin-top: 8px;
+		margin-left: 10px;
+	}
+
+	.plusImgClass {
+		margin-right: 10px;
+		position: absolute;
+		margin-top: 8px;
+		margin-left: 8px;
+	}
+
+	.mui-visibility {
+		margin-top: -50px;
+		margin-bottom: 50px;
+	}
+
+	.mui-table-view-cell>a:not(.mui-btn) {
+		white-space: initial;
+	}
+</style>
+
+<body>
+
+	<header class="mui-bar mui-bar-nav">
+		<div class="mui-content" style="display:none;" id="scientificId">
+			<div class="mui-row">
+				<div class="mui-col-sm-12 mui-col-xs-12" style="text-align: center;">
+					<a style="text-decoration: underline;" class="scientificClass" id="srl"></a>
+				</div>
+			</div>
+		</div>
+
+		<div class="mui-content-padded marginBotton0">
+			<div class="ui-flex">
+				<div class="mui-table-cell statusChoose">
+					<a id="menu" href="#topPopover">
+
+						<span id="status">
+							<span id="statusContent">CRF状态</span>
+						</span>
+					</a>
+				</div>
+				<div class="mui-table-cell ui-flex-item" id="searchInput">
+					<div class="mui-input-row mui-search">
+						<input id="key" type="search" class="mui-input-clear" placeholder="">
+					</div>
+				</div>
+			</div>
+	</header>
+
+	<!--左上角弹出菜单-->
+	<div id="topPopover" class="mui-popover">
+		<div class="mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul class="mui-table-view" id="statusId">
+
+				</ul>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="mui-content">
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll scrollPatient">
+				<ul class="mui-table-view" id="patientList">
+				</ul>
+			</div>
+		</div>
+
+		<div class="switchIcon switchClass" id="showUserPicker" style="display:none;">
+			<img class="switchImgClass" src="../../assets/image/switch.png" alt="">
+		</div>
+
+		<div class="plusIcon access_control" accesscontrolkey="addPatient_btn">
+			<img class="plusImgClass" src="../../assets/image/plus.png" alt="" />
+		</div>
+
+		<nav class="mui-bar mui-bar-tab" style="background-color: #FFFFFF;" id="navId">
+			<!-- <a class="mui-tab-item menu-item calendar" target="home ">
+				<span class="mui-tab-label">日历</span>
+			</a>
+			<a class="mui-tab-item menu-item dynamic" target="patientManager">
+				<span class="mui-tab-label ">动态</span>
+			</a>
+			<a class="mui-tab-item menu-item mui-active patient" target="search">
+				<span class="mui-tab-label">病例记录</span>
+			</a> -->
+		</nav>
+	</div>
+
+	<script src="../../assets/js/jquery.1.9.1.min.js "></script>
+	<script src="../../assets/js/mui.min.js "></script>
+	<script src="../../assets/js/mui.picker.min.js "></script>
+	<script src="../../assets/js/mui.pullToRefresh.js "></script>
+	<script src="../../assets/js/mui.pullToRefresh.material.js "></script>
+	<script src="../publicController.js "></script>
+
+	<script src="../../pdmsApp/patient/js/patientList.js "></script>
+	<!-- <script src="../assets/js/unForward.js "></script> -->
+
+	<script type="text/javascript ">
+			mui('#pullrefresh').pullRefresh({
+				container: '#pullrefresh',
+				up: {
+					callback: pullrefresh
+				}
+			});
+
+			var offset = '';
+			function pullrefresh() {
+  const statusMap = [];
+  statusMap['crf状态'] = '-1';
+  statusMap['未录入'] = 'NEW';
+  statusMap['录入中'] = 'RECOREDING';
+  statusMap['已完成'] = 'COMPLETED';
+  statusMap['提交中'] = 'COMMITING';
+  statusMap['已提交'] = 'COMMITED';
+  statusMap['清理中'] = 'CLEARING';
+  statusMap['已清理'] = 'CLEARED';
+  statusMap['已入组'] = 'ENTERED';
+  statusMap['随访中'] = 'FOLLOWUP';
+  statusMap['已取消'] = 'CANCELLED';
+
+
+  const sdvStatusMap = [];
+  sdvStatusMap['crf状态'] = '-1';
+  sdvStatusMap['未SDV'] = 'UNSDV';
+  sdvStatusMap['SDV中'] = 'SDVING';
+  sdvStatusMap['已SDV'] = 'SDVEND';
+
+  const keyValue = $('#key').val();
+  const crfStatus = $.trim($('#statusContent').html());
+
+  let statusValue = '-1';
+  let sdvStatusValue = '-1';
+
+  let status = '';
+  let sdvStatus = '';
+  if (crfStatus != 'CRF状态') {
+    status = crfStatus.substring(0, 3);
+    if (status != '') {
+      for (const statusKey in statusMap) {
+			    statusValue = statusMap[status];
+      }
+    }
+
+    sdvStatus = crfStatus.substring(3, 7);
+    if (sdvStatus != '') {
+      for (const sdvStatusKey in sdvStatusMap) {
+			    sdvStatusValue = sdvStatusMap[sdvStatus];
+      }
+    }
+  } else {
+    statusValue = '-1';
+    sdvStatusValue = '-1';
+  }
+  var searchPatientsParams = 'patientName='+keyValue+'&status='+statusValue+'&siteId='+sessionStorage.getItem('siteId')+'&roleId='+sessionStorage.getItem('roleId')+
+    '&userId=' +sessionStorage.getItem('userId') + '&offset='+(offset * 1 + 1 * 1)+'&limit=10&researchLibraryId=' + sessionStorage.getItem('scientificResearchLibraryId');
+
+  mui.ajax(`${path}patient/searchPatients.do?${searchPatientsParams}`, {
+    data: {},
+    dataType: 'json', // 服务器返回json格式数据
+    type: 'post', // HTTP请求类型
+    timeout: 10000, // 超时时间设置为10秒；
+    success(data) {
+      if (data.error) {
+        mui.alert(data.error, '提示');
+      } else {
+        let str = '';
+        if (data.datas.datas.length * 1 > 0) {
+          for (let i = 0; i < data.datas.datas.length; i++) {
+            str += `<li class="mui-table-view-cell patientDetail" patientId="${data.datas.datas[i].patientId}">`;
+            str += '<a class="mui-navigate-right mui-slider-handle">';
+            str += '<div class="mui-row">';
+            str += '<div class="mui-col-sm-3 mui-col-xs-3">';
+            if (patientNameType == 0) {
+              if (data.datas.datas[i].patientName != '') {
+                str += data.datas.datas[i].patientName;
+              } else {
+                str += '未填写';
+              }
+            } else if (patientNameType == 1) {
+              if (data.datas.datas[i].patientNameCN != '') {
+                str += data.datas.datas[i].patientNameCN;
+              } else {
+                str += '未填写';
+              }
+            } else if (data.datas.datas[i].patientName != '') {
+              str += data.datas.datas[i].patientName;
+            } else {
+              str += '未填写';
+            }
+
+            str += '</div>';
+            str += '<div class="mui-col-sm-2 mui-col-xs-2">';
+            str += `|&nbsp;${data.datas.datas[i].patientNo}`;
+            str += '</div>';
+
+
+            const statusName = data.datas.datas[i].statusName;
+            const sdvStatusName = data.datas.datas[i].sdvStatusName;
+            const sdvType = data.sdvType;
+            str += '<div class="mui-col-sm-7 mui-col-xs-7" style="text-align: right;padding-right: 15px;">';
+            str += statusName;
+            str += '</div>';
+
+            str += '</div>';
+            str += '</a>';
+
+            str += '<div class="mui-slider-right mui-disabled">';
+            str += `<a class="mui-btn mui-btn-green access_control" accesscontrolkey="commitPatient_btn" patientId="${data.datas.datas[i].patientId}">提交</a>`;
+            str += `<a class="mui-btn mui-btn-red access_control" accesscontrolkey="deletePatient_btn" status="${data.datas.datas[i].status}" patientUserId="${data.datas.datas[i].userId}" patientId="${data.datas.datas[i].patientId}">删除</a>`;
+            str += '</div>';
+            str += '</li>';
+          }
+		  
+		  $('#patientList').append(str);
+		
+		offset = (offset*1 + 1*1);
+											
+		var totalCount = data.totalCount;
+		if(offset*10 >= totalCount){
+			mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+		}else{
+			mui('#pullrefresh').pullRefresh().enablePullupToRefresh();
+		}
+
+				// 权限
+        accessControl();
+
+				// 跳转到详情页面
+        mui('.mui-table-view').on('tap', '.patientDetail', function (e) {
+          const patientId = $(this).attr('patientId');
+          sessionStorage.setItem('patientId', patientId);
+          mui.openWindow({
+            url: 'patientDetail.html',
+            id: 'patientDetail.html',
+          });
+        });
+
+				// 提交病例
+        mui('.mui-disabled').on('tap', '.mui-btn-green', function (e) {
+          const val = $(this).attr('patientId');
+
+          commitPatients(val);
+        });
+
+				// 删除病例
+        mui('.mui-disabled').on('tap', '.mui-btn-red', function (e) {
+          const val = $(this).attr('patientId');
+          const patientUserId = $(this).attr('patientUserId');
+          const status = $(this).attr('status');
+          deletePatient(val, patientUserId, status);
+				});
+				
+        } else {
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+					str += noData();
+					$('#patientList').html(noData);
+        }
+		
+      }
+    },
+    error(xhr, type, errorThrown) {
+			// 异常处理；
+      console.log(type);
+    },
+  });
+}
+
+
+			
+			
+			mui('.mui-content').on('tap', '.plusIcon', function() {
+				mui.openWindow({
+					url: 'patientAdd.html',
+					id: 'patientAdd.html'
+				})
+			});
+			mui('.mui-bar').on('tap','.dynamic',function(){
+		    	mui.openWindow({
+		            url:'../../dynamic/dynamic.html',
+		            id:'../../dynamic/dynamic.html'
+		        });
+		    });
+		    mui('.mui-bar').on('tap','.calendar',function(){
+		    	mui.openWindow({
+		            url:'../../../calendar/index.html',
+		            id:'../../../calendar/index.html'
+		        });
+		    });
+		</script>
+
+</body>
+
+</html>
